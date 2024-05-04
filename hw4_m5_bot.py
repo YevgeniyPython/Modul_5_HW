@@ -9,6 +9,10 @@ def input_error(func):
             return func(*args, **kwargs)
         except ValueError:
             return "Give me name and phone please."
+        except KeyError:
+            return "There is no such name in the contact list"
+        except IndexError:
+            return "Give me name"
 
     return inner
 
@@ -26,25 +30,13 @@ def change_username_phone(args, contacts):
         return "Contact updated."
     else:
         return "There is no such name in the contact list"
+     
 
-def input_error_phone(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except IndexError:
-            return "Give me name"
-        
-
-    return inner
-
-@input_error_phone
+@input_error
 def phone(args, contacts):
     name = args[0]
-    if name in list(contacts.keys()):
-        phone = contacts.get(name)
-        return phone 
-    else:
-        return "There is no such name in the contact list"
+    phone = contacts[name]
+    return phone
 
 
 def main():
